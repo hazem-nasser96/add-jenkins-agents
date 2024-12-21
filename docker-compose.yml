@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  jenkins-agent1:
+    image: jenkins/inbound-agent:latest
+    container_name: jenkins-agent1
+    environment:
+      - JENKINS_URL=http://172.17.0.1:8080
+      - JENKINS_AGENT_NAME=agent1
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent1
+      - JENKINS_SECRET=faf24b9eb51e4f6cad47e47ce1d972f87993630fbd86dfc22d53c2ea776be9a4  # Replace with the agent secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Optional: If the agent needs to build Docker images
+      - /home/jenkins/agent1:/home/jenkins/agent1  # Workspace for the agent
+    restart: unless-stopped
+
+
+  jenkins-agent2:
+    image: jenkins/inbound-agent:latest
+    container_name: jenkins-agent2
+    environment:
+      - JENKINS_URL=http://172.17.0.1:8080
+      - JENKINS_AGENT_NAME=agent2
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent2
+      - JENKINS_SECRET=605f609bcf06f4de56526762dfae0d414db4322e58a2fd31cbc09dcdee8f4f20  # Replace with the agent secret
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Optional: If the agent needs to build Docker images
+      - /home/jenkins/agent2:/home/jenkins/agent2  # Workspace for the agent
+    restart: unless-stopped
+
+
+  jenkins-agent3:
+    image: jenkins/ssh-agent:latest
+    container_name: jenkins-agent3
+    environment:
+      - JENKINS_URL=http://172.17.0.1:8080
+      - JENKINS_AGENT_NAME=agent3
+      - JENKINS_AGENT_WORKDIR=/home/jenkins/agent3
+      - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCWuNaBL3yQEqgjWeWrhejhoWGqlHI8y0ml8m0F1SmCKeWxGw/BBIui3pJqjpGvgcjgAwtHxCHsiinVkkbBNF7XII4cph/rk/IwKk18lzMHvXamvgYebUw2HccTBQhY3vKCcHztJOWRv/Qa2ITBqoR9rKFH8gf3Sxse/YMKienbEwyARPwEj997gTGOZ5Lm8u/1Fai50LgaI3YYTBYT9P3Kt4tUaewKu2U+WUPeqDE4BprgPmXbFbqE5NCkOSYO/6JD/FoUewSsgID45vCbzbkAiVUe9DzohDRFsXsNZuxF9r46ycBaPvGCpbA5DFf9vM+jHeKjaldZ2UZVHQjkNGUN77MYMfcX6Yj4AwVqwNEpK742tyg6TRLm/vcN2w3nQTkCN3jhI8TouGNB2ZPXtYfgtiEn9hWuMgVyQ/J9U3eqgoQLXovS8sufxTiTu9Pj6ws9YvyFEAGe4Z7TFFkcibZ+vf1IU1NKCfjx6OSn1bjMqYetTaTFZEcbsFkpaS/YqBE= hazem@hazem-VirtualBox
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # Optional: If the agent needs to build Docker images
+      - /home/jenkins/agent3:/home/jenkins/agent3  # Workspace for the agent
+      
+    ports:
+      - "333:22"
+    restart: unless-stopped
+
+
